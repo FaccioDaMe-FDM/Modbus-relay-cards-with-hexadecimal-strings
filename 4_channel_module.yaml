@@ -1,0 +1,153 @@
+###   4 channel module   ###     ###   modbus rs485   ###
+
+sensor:
+  - platform: tcpsensor                          ###   add integration repository component   ###
+    name: Rele_4ch_A  
+    host: 192.178.xxx.xxx                        ###   add converter ip address               ###
+    port: 23xx                                   ###   add converter port                     ###
+    timeout: 10
+    scan_interval: 1
+    payload: "01 02 00 00 00 08 79 CC" 
+    payload_is_hex: true
+    value_template: "{{ value }}"
+
+template:
+  - sensor:
+
+                        ###   states - work in progress   ###
+
+      - name: Stato_Rele_4ch_A_1
+        unique_id: stato_rele_4ch_a_1
+        state: >
+            {% set cha4 = states('sensor.rele_4ch_a') | string %}
+            {% if cha4 == "01 01 01 00 51 88" %}
+              Rele 1 Off
+            {% elif cha4 == "01 01 01 02 d0 49" %}
+              Rele 1 Off
+            {% elif cha4 == "01 01 01 03 11 89" %}
+              Rele 1 On
+            {% elif cha4 == "01 01 01 01 90 48" %}
+              Rele 1 On
+            {% else %}
+              {{ cha4 }}
+            {% endif %}
+
+      - name: Stato_Rele_4ch_A_2
+        unique_id: stato_rele_4ch_a_2
+        state: >
+            {% set cha4 = states('sensor.rele_4ch_a') | string %}
+            {% if cha4 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha4 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha4 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha4 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha4 }}
+            {% endif %}
+
+      - name: Stato_Rele_4ch_A_3
+        unique_id: stato_rele_4ch_a_3
+        state: >
+            {% set cha4 = states('sensor.rele_4ch_a') | string %}
+            {% if cha4 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha4 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha4 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha4 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha4 }}
+            {% endif %}
+
+      - name: Stato_Rele_4ch_A_4
+        unique_id: stato_rele_4ch_a_4
+        state: >
+            {% set cha4 = states('sensor.rele_4ch_a') | string %}
+            {% if cha4 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha4 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha4 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha4 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha4 }}
+            {% endif %}
+
+command_line:
+
+  - switch:
+      name: Rele_4ch_A_1_On_Off
+      command_on: echo "01 05 00 00 FF 00 8C 3A" | xxd -r -p  | nc 192.168.88.230 7786
+      command_off: echo "01 05 00 00 00 00 CD CA" | xxd -r -p  | nc 192.168.88.230 7786
+
+  - switch:
+      name: Rele_4ch_A_2_Mod_Vento
+      command_on: echo "01 05 00 01 FF 00 DD FA" | xxd -r -p  | nc 192.168.88.230 7786
+      command_off: echo "01 05 00 01 00 00 9C 0A" | xxd -r -p  | nc 192.168.88.230 7786
+
+  - switch:
+      name: Rele_4ch_A_3_Mod_Fresto
+      command_on: echo "01 05 00 02 FF 00 2D FA" | xxd -r -p  | nc 192.168.88.230 7786
+      command_off: echo "01 05 00 02 00 00 6c 0a" | xxd -r -p  | nc 192.168.88.230 7786
+
+  - switch:
+      name: Rele_4ch_A_4_Vento_Forte
+      command_on: echo "01 05 00 03 FF 00 7C 3A" | xxd -r -p  | nc 192.168.88.230 7786
+      command_off: echo "01 05 00 03 00 00 3D CA" | xxd -r -p  | nc 192.168.88.230 7786
+
+
+                                  ###   label hex strings command   ### 
+
+
+
+#  Read address :      00 03 00 00 00 01 85 db
+
+
+#all off :           01 0F 00 00 00 08 01 00 FE 95
+
+#all on :            01 0F 00 00 00 08 01 FF BE D5
+
+
+#rele 1 flip：        01 05 00 00 55 00 F2 9A
+#rele 2 flip：        01 05 00 01 55 00 A3 5A
+#rele 3 flip：        01 05 00 02 55 00 53 5A
+#rele 4 flip：        01 05 00 03 55 00 02 9A
+
+#full flip :         01 05 00 00 5A 00 F7 6A
+
+
+#read all rele status :    01 02 00 00 00 08 79 CC
+
+#read all channel status :   01 01 00 00 00 08 3D CC
+
+
+#read all imput status :   01 02 00 00 00 00 78 0a
+
+#in 1 press :          01 02 01 01 60 48   
+#in 2 press :          01 02 01 02 20 49   
+#in 3 press :          01 02 01 04 A0 4B   
+#in 4 press :          01 02 01 08 A0 4E   
+
+
+#rele 1 on :         01 05 00 00 FF 00 8C 3A
+
+#rele 1 off :        01 05 00 00 00 00 CD CA
+
+#rele 2 on :         01 05 00 01 FF 00 DD FA 
+
+#rele 2 off :        01 05 00 01 00 00 9C 0A 
+
+#rele 3 on :         01 05 00 02 FF 00 2D FA
+
+#rele 3 off :        01 05 00 02 00 00 6c 0a 
+
+#rele 4 on :         01 05 00 03 FF 00 7C 3A 
+
+#rele 4 off :        01 05 00 03 00 00 3D CA
