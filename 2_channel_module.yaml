@@ -1,0 +1,145 @@
+###   2 channel module   ###     ###   modbus rs485   ###     ###   scambio Rete / Inverter   ###
+
+sensor:
+  - platform: tcpsensor                              ###   add integration repository component   ###
+    name: Rele_ATS
+    host: 192.178.xxx.xxx                            ###   add converter ip address               ###
+    port: 23xx                                       ###   add converter port                     ###
+    timeout: 10
+    scan_interval: 1
+    payload: "01 01 00 00 00 08 3d cc" 
+    payload_is_hex: true
+    value_template: "{{ value }}"
+
+template:
+  - sensor:
+      - name: Stato_Rele_ATS
+        unique_id: stato_rele_ats
+        state: >
+            {% set ats_state = states('sensor.rele_ats') | string %}
+            {% if ats_state == "01 01 01 00 51 88" %}
+              Rele 1 & 2 Off
+            {% elif ats_state == "01 01 01 03 11 89" %}
+              Rele 1 & 2 On
+            {% elif ats_state == "01 01 01 02 d0 49" %}
+              Rele 1 Off & Rele 2 On
+            {% elif ats_state == "01 01 01 01 90 48" %}
+              Rele 1 On & Rele 2 Off
+            {% else %}
+              {{ ats_state }}
+            {% endif %}
+
+      - name: Stato_Rele_ATS_1
+        unique_id: stato_rele_ats_1
+        state: >
+            {% set ats_state_1 = states('sensor.rele_ats') | string %}
+            {% if ats_state_1 == "01 01 01 00 51 88" %}
+              Rele 1 Off
+            {% elif ats_state_1 == "01 01 01 02 d0 49" %}
+              Rele 1 Off
+            {% elif ats_state_1 == "01 01 01 03 11 89" %}
+              Rele 1 On
+            {% elif ats_state_1 == "01 01 01 01 90 48" %}
+              Rele 1 On
+            {% else %}
+              {{ ats_state_1 }}
+            {% endif %}
+
+      - name: Stato_Rele_ATS_2
+        unique_id: stato_rele_ats_2
+        state: >
+            {% set ats_state_2 = states('sensor.rele_ats') | string %}
+            {% if ats_state_2 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif ats_state_2 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif ats_state_2 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif ats_state_2 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ ats_state_2 }}
+            {% endif %}
+
+      - name: Stato_ATS
+        unique_id: stato_ats
+        state: >
+            {% set sys_ats_state = states('sensor.rele_ats') | string %}
+            {% if sys_ats_state == "01 01 01 00 51 88" %}
+              Fotovoltaico
+            {% elif sys_ats_state == "01 01 01 02 d0 49" %}
+              Fotovoltaico
+            {% elif sys_ats_state == "01 01 01 03 11 89" %}
+              Rete Enel
+            {% elif sys_ats_state == "01 01 01 01 90 48" %}
+              Rete Enel
+            {% else %}
+              {{ sys_ats_state }}
+            {% endif %}
+
+      - name: Stato_Inverters
+        unique_id: stato_inverters
+        state: >
+            {% set inverters_state = states('sensor.rele_ats') | string %}
+            {% if inverters_state == "01 01 01 03 11 89" %}
+              Inverters Off
+            {% elif inverters_state == "01 01 01 02 d0 49" %}
+              Inverters Off
+            {% elif inverters_state == "01 01 01 00 51 88" %}
+              Inverters On
+            {% elif inverters_state == "01 01 01 01 90 48" %}
+              Inverters On
+            {% else %}
+              {{ inverters_state }}
+            {% endif %}
+
+command_line:
+  - switch:
+      name: Scambio ATS
+      command_on: echo "01 05 00 00 ff 00 8c 3a" | xxd -r -p  | nc 192.168.88.240 8892
+      command_off: echo "01 05 00 00 00 00 cd ca" | xxd -r -p  | nc 192.168.88.240 8892
+
+  - switch:
+      name: Inverter OnOff
+      command_on: echo "01 05 00 01 ff 00 dd fa" | xxd -r -p  | nc 192.168.88.240 8892
+      command_off: echo "01 05 00 01 00 00 9c 0a" | xxd -r -p  | nc 192.168.88.240 8892
+
+input_number:
+  battery_level_test:
+    name: battery_level_test
+    icon: mdi:battery-high
+    min: 0
+    max: 100
+    initial: 50
+    step: 1
+    mode: box
+    unit_of_measurement: '%'
+
+
+
+                                  ###   label hex strings command   ### 
+        
+
+
+# set address 1   00 10 00 00 00 01 02 00 01 6A 00
+# set address 2   00 10 00 00 00 01 02 00 02 2a 01
+# set address 3   00 10 00 00 00 01 02 00 03 eb c1 
+
+# read address    00 03 00 00 00 01 85 db 
+  # respons         00 03 02 00 01 44 44    =  address 1
+
+# rele 1 on       01 05 00 00 ff 00 8c 3a    = led blu
+# rele 1 off      01 05 00 00 00 00 cd ca
+
+# rele 2 on       01 05 00 01 ff 00 dd fa    = spia verde
+# rele 2 off      01 05 00 01 00 00 9c 0a
+
+# stato rele 1    01 01 00 00 00 01 fd ca
+  
+# stato rele 2    
+  
+# stato all rele  01 01 00 00 00 08 3d cc   
+  
+
+
+###   Example Command :    (  echo "01 05 00 00 ff 00 8c 3a" | xxd -r -p  | nc 192.168.88.240 8892  )   ###   
