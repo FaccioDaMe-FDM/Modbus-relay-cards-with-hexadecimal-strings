@@ -1,0 +1,22 @@
+                                  ###   label hex strings command   ### 
+        
+
+
+# set address 1   00 10 00 00 00 01 02 00 01 6A 00
+# set address 2   00 10 00 00 00 01 02 00 02 2a 01
+# set address 3   00 10 00 00 00 01 02 00 03 eb c1 
+
+# read address    00 03 00 00 00 01 85 db 
+  # respons         00 03 02 00 01 44 44    =  address 1
+
+# rele 1 on       01 05 00 00 ff 00 8c 3a    = led blu
+# rele 1 off      01 05 00 00 00 00 cd ca
+
+# rele 2 on       01 05 00 01 ff 00 dd fa    = spia verde
+# rele 2 off      01 05 00 01 00 00 9c 0a
+
+# stato rele 1    01 01 00 00 00 01 fd ca
+  
+# stato rele 2    
+  
+# stato all rele  01 01 00 00 00 08 3d cc   
