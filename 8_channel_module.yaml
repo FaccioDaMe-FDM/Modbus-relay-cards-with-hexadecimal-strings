@@ -1,0 +1,188 @@
+###   8 channel module   ###     ###   modbus rs485   ###
+
+sensor:
+  - platform: tcpsensor                                ###   add integration repository component   ###
+    name: Rele_8ch_A
+    host: 192.178.xxx.xxx                              ###   add converter ip address               ###
+    port: 23xx                                         ###   add converter port                     ###
+    timeout: 10
+    scan_interval: 1
+    payload: "01 01 00 00 00 08 3D CC" 
+    payload_is_hex: true
+    value_template: "{{ value }}"
+
+template:
+  - sensor:
+
+                            ###   states - work in progress   ###
+
+      - name: Stato_Rele_8ch_A_1_PoE_LT
+        unique_id: stato_rele_8ch_a_1_poe_lt
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 1 Off
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 1 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 1 On
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 1 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_2_Mk_LT
+        unique_id: stato_rele_8ch_a_2_mk_lt
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_3
+        unique_id: stato_rele_8ch_a_3
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_4
+        unique_id: stato_rele_8ch_a_4
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_5
+        unique_id: stato_rele_8ch_a_5
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_6
+        unique_id: stato_rele_8ch_a_6
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_7
+        unique_id: stato_rele_8ch_a_7
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+      - name: Stato_Rele_8ch_A_8
+        unique_id: stato_rele_8ch_a_8
+        state: >
+            {% set cha8 = states('sensor.rele_8ch_a') | string %}
+            {% if cha8 == "01 01 01 00 51 88" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 01 90 48" %}
+              Rele 2 Off
+            {% elif cha8 == "01 01 01 03 11 89" %}
+              Rele 2 On
+            {% elif cha8 == "01 01 01 02 d0 49" %}
+              Rele 2 On
+            {% else %}
+              {{ cha8 }}
+            {% endif %}
+
+
+command_line:
+
+  - switch:
+      name: Rele_8ch_A_1_PoE_LT
+      command_on: echo "01 05 00 00 FF 00 8C 3A" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 00 00 00 CD CA" | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_2_Mk_LT
+      command_on: echo "01 05 00 01 FF 00 DD FA" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 01 00 00 9C 0A" | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_3
+      command_on: echo "01 05 00 02 FF 00 2D FA" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 02 00 00 6C 0A" | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_4
+      command_on: echo "01 05 00 03 FF 00 7C 3A" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 03 00 00 3D CA" | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_5
+      command_on: echo "01 05 00 04 FF 00 CD FB" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 04 00 00 8C 0B" | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_6
+      command_on: echo "01 05 00 05 FF 00 9C 3B" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 05 00 00 DD CB" | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_7
+      command_on: echo "01 05 00 06 FF 00 6C 3B" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 06 00 00 2D CB " | xxd -r -p  | nc 192.168.88.191 7787
+
+  - switch:
+      name: Rele_8ch_A_8
+      command_on: echo "01 05 00 07 FF 00 3D FB" | xxd -r -p  | nc 192.168.88.191 7787
+      command_off: echo "01 05 00 07 00 00 7C 0B " | xxd -r -p  | nc 192.168.88.191 7787
